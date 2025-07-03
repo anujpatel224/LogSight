@@ -1,0 +1,21 @@
+services:
+  backend:
+    build: ./backend
+    container_name: log-backend
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: log-frontend
+    ports:
+      - '5173:5173'
+    stdin_open: true
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
